@@ -1,8 +1,6 @@
 ARG ALPINE="alpine:3.18"
 ARG GOLANG="golang:1.21-alpine3.18"
 
-RUN apk update && apk add bash && mkdir -p /CloudflareST && wget -O /CloudflareST/CloudflareST.tar.gz https://github.com/XIU2/CloudflareSpeedTest/releases/download/v2.2.4/CloudflareST_linux_amd64.tar.gz && cd /CloudflareST && tar -zxvf CloudflareST.tar.gz && rm -rf CloudflareST.tar.gz
-
 FROM ${GOLANG} AS xray
 ENV XRAY="1.8.4"
 RUN wget https://github.com/XTLS/Xray-core/archive/v${XRAY}.tar.gz -O- | tar xz
@@ -39,5 +37,6 @@ RUN ls | xargs -n1 -P0 upx -9
 FROM ${ALPINE}
 RUN apk add --no-cache dhcp radvd iptables ip6tables
 COPY --from=release /release/ /
+RUN apk update && apk add bash && mkdir -p /CloudflareST && wget -O /CloudflareST/CloudflareST.tar.gz https://github.com/XIU2/CloudflareSpeedTest/releases/download/v2.2.4/CloudflareST_linux_amd64.tar.gz && cd /CloudflareST && tar -zxvf CloudflareST.tar.gz && rm -rf CloudflareST.tar.gz
 WORKDIR /xproxy/
 ENTRYPOINT ["xproxy"]
