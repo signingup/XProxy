@@ -1,4 +1,3 @@
-FROM thibaultmorin/keepalived
 ARG ALPINE="alpine:3.18"
 ARG GOLANG="golang:1.21-alpine3.18"
 
@@ -34,6 +33,8 @@ COPY --from=assets /assets.tar.xz /release/
 COPY --from=xray /xray /release/usr/bin/
 WORKDIR /release/usr/bin/
 RUN ls | xargs -n1 -P0 upx -9
+
+FROM thibaultmorin/keepalived
 
 FROM ${ALPINE}
 RUN apk add --no-cache dhcp radvd iptables ip6tables
