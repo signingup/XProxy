@@ -1,3 +1,4 @@
+FROM thibaultmorin/keepalived
 ARG ALPINE="alpine:3.18"
 ARG GOLANG="golang:1.21-alpine3.18"
 
